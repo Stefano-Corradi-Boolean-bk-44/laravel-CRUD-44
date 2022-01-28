@@ -4,10 +4,28 @@
 @section('content')
 
 <div class="container">
-    <h1>{{ $pasta->title }}</h1>
-    <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sint eum eveniet consectetur placeat dolorum dolorem quam velit voluptatem. Fuga quaerat eaque dolores ab voluptas voluptate dolorum rem accusantium quasi distinctio.
-    </p>
+    <h1>{{ $pasta->title }} <a href="{{ route('pastas.edit', $pasta) }}" class="btn btn-primary">EDIT</a></h1>
+    <div>
+        <span class="badge bg-primary">{{ $pasta->type }}</span>
+        <span>
+            Tempo di cottura: <strong>  {{ $pasta->coocking_time }} minuti</strong>
+        </span>
+    </div>
+
+    <div class="row py-3">
+        <div class="col-6">
+            <img class="img-fluid" src="{{ $pasta->image }}" alt="{{ $pasta->title }}">
+        </div>
+        <div class="col-6">
+            <p>
+                {{-- sintassi per stampare entità HTML --}}
+                {!! $pasta->description !!}
+            </p>
+        </div>
+    </div>
+
+
+
 </div>
 
 <div class="container">

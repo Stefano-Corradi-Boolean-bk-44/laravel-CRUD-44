@@ -21,8 +21,15 @@
                     <td>{{ $pasta->title }}</td>
                     <td>{{ $pasta->type }}</td>
                     <td><a href="{{ route('pastas.show', $pasta) }}" class="btn btn-success">SHOW</a></td>
-                    <td><a href="#" class="btn btn-primary">EDIT</a></td>
-                    <td><a href="#" class="btn btn-danger">DELETE</a></td>
+                    <td><a href="{{ route('pastas.edit', $pasta) }}" class="btn btn-primary">EDIT</a></td>
+                    <td>
+                        {{-- devo usare il form con metodo DELETE perché con un bototne normale invierei in GET --}}
+                        <form action="{{ route('pastas.destroy', $pasta) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="submit" class="btn btn-danger">DELETE</button></td>
+                        </form>
                 </tr>
             @endforeach
 

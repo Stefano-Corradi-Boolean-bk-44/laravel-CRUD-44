@@ -1,4 +1,4 @@
-<header>
+<header class="mb-5">
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
@@ -15,7 +15,10 @@
                 <a class="nav-link @if (Route::currentRouteName() === 'pastas.index') 'active' @endif" href="{{ route('pastas.index') }}">Le nostre paste</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link @if (Route::currentRouteName() === 'pastas.index') 'active' @endif" href="{{ route('contacts') }}">Contatti</a>
+                <a class="nav-link @if (Route::currentRouteName() === 'pastas.create') 'active' @endif" href="{{ route('pastas.create') }}">Inserisci una nuova pasta</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Contatti</a>
               </li>
 
 
