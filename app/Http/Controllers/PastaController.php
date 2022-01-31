@@ -15,7 +15,7 @@ class PastaController extends Controller
      */
     public function index()
     {
-        $pastas = Pasta::paginate(5);
+        $pastas = Pasta::orderBy('id','desc')->paginate(5);
         return view('pastas.index', compact('pastas'));
     }
 
@@ -37,6 +37,10 @@ class PastaController extends Controller
      */
     public function store(Request $request)
     {
+        // il metodo validate() di request accetta 2 parametri:
+        // il primo sono tutti i campi da validare e il secondo i messagi di errore
+        // se non viene superata la validazione validate genera un oggetto $errors
+        $request->validate( $this->validationData(), $this->validationErrors() );
         // salvo dentro $data tutti i name dei campi del form inviati nella request
         $data = $request->all();
 
@@ -99,6 +103,8 @@ class PastaController extends Controller
      */
     public function update(Request $request, Pasta $pasta)
     {
+        $request->validate( $this->validationData(), $this->validationErrors() );
+
         $data = $request->all();
 
         $data['slug'] = $this->createSlug($data['title']);
@@ -117,10 +123,36 @@ class PastaController extends Controller
     {
         $pasta->delete();
 
-        return redirect()->route('pastas.index');
+        // invio in sessione la variabile di sessione 'deleted'
+        return redirect()->route('pastas.index')->with('deleted', "La pasta $pasta->title è stata eliminata");
     }
 
     private function createSlug($string){
         return  Str::slug($string,'-');
+    }
+
+    private function validationData(){
+        return [
+            'title' => "required|max:50|min:2",
+            'type' => 'required|max:20|min:2',
+            'image' => 'required|max:255',
+            'coocking_time' => 'required|numeric|min:1'
+        ];
+    }
+
+    private function validationErrors(){
+        return [
+            'title.required' => 'Il titolo è un campo obbligatorio',
+            'title.max' => 'Il numero di caratteri per il nome della pasta consentito è di :max caratteri',
+            'title.min' => 'Il numero minimo di caratteri per il nome della pasta è di :min caratteri',
+            'type.required' => 'Il tipo di pasta è un campo obbligatorio',
+            'type.max' => 'Il numero di caratteri per il tipo consentito è di :max caratteri',
+            'type.min' => 'Il numero minimo di caratteri per il tipo è di :min caratteri',
+            'coocking_time.required' => 'Il tempo di cottura è oblbigatorio',
+            'coocking_time.numeric' => 'Il tempo di cottura deve essere un numero',
+            'coocking_time.min' => 'Il tempo di cottura deve essere di minmo 1 minuto',
+            'image.required' => "L'immagine è un campo obbligatorio",
+            'image.max' => "L'url dell'immagine non può contenere più di 255 caratteri",
+        ];
     }
 }
